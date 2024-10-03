@@ -36,6 +36,33 @@ void bubbleSort(int v[], int n){
     }
 }
 
+//complexidade de espaço: O(1) (constante)
+//complexidade de tempo: O(n²) (exponencial)
+void bubbleSortOtimizado(int v[], int n){
+    for(int i=0; i < n-1; i++){
+    	bool houveTroca = false;
+        for(int j=0; j < (n-1) - i; j++){
+            if(v[j] > v[j+1]){
+                troca(v, j, j+1);
+                houveTroca = true;
+            }
+        }
+        if(!houveTroca) return;
+    }
+}
+
+//complexidade de espaço: O(1) (constante)
+//complexidade de tempo: O(n²) (exponencial)
+void selectionSort(int v[], int n){
+	for(int i=0; i < n-1; i++){
+		for(int j=i+1; j < n; j++){
+			if(v[i] > v[j]){
+				troca(v, i, j);
+			}
+		}
+	}
+}
+
 int main(){
 	srand(time(NULL));
     int n = 100000;
@@ -43,7 +70,7 @@ int main(){
 
     geraVetor(v, n);
     imprimirVetor(v, n);
-    bubbleSort(v, n);
+    selectionSort(v, n);
     imprimirVetor(v, n);
 
     return 0;
