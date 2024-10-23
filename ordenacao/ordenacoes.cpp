@@ -24,8 +24,14 @@ void imprimirVetor(int v[], int n){
     cout<<endl;
 }
 
-//complexidade de espaço: O(1) (constante)
-//complexidade de tempo: O(n²) (exponencial)
+void imprimirVetorC(int v[], int n) {
+    for (int i = n - 1; i >= 0; i--) {
+        printf("%d\n", v[i]);
+    }
+}
+
+//complexidade de espaÃ§o: O(1) (constante)
+//complexidade de tempo: O(nÂ²) (exponencial)
 void bubbleSortOtimizado(int v[], int n){
     for(int i=0; i < n-1; i++){
     	bool houveTroca = false;
@@ -39,8 +45,8 @@ void bubbleSortOtimizado(int v[], int n){
     }
 }
 
-//complexidade de espaço: O(1) (constante)
-//complexidade de tempo: O(n²) (exponencial)
+//complexidade de espaÃ§o: O(1) (constante)
+//complexidade de tempo: O(nÂ²) (exponencial)
 void selectionSort(int v[], int n){
 	for(int i=0; i < n-1; i++){
 		for(int j=i+1; j < n; j++){
@@ -51,8 +57,8 @@ void selectionSort(int v[], int n){
 	}
 }
 
-//complexidade de espaço: O(1) (constante)
-//complexidade de tempo: O(n²) (exponencial)
+//complexidade de espaÃ§o: O(1) (constante)
+//complexidade de tempo: O(nÂ²) (exponencial)
 void insertionSort(int v[], int n){
 	for(int i=1; i < n; i++){
 		int aux = v[i];
@@ -67,14 +73,14 @@ void insertionSort(int v[], int n){
 	}
 }
 
-// Complexidade de tempo e espaço = O(n)
+// Complexidade de tempo e espaÃ§o = O(n)
 void merge(int v[], int ini, int meio, int fim) {
     int tmp[(fim-ini) + 1];
     int i=ini;
 	int j=meio + 1;
 	int k=0;
     
-    //meio e fim são os limites dos vetores divididos
+    //meio e fim sÃ£o os limites dos vetores divididos
     while (i<=meio && j<=fim) {
         tmp[k++] = (v[i] < v[j]) ? v[i++] : v[j++];
         
@@ -104,7 +110,7 @@ void merge(int v[], int ini, int meio, int fim) {
     }
 }
 
-//complexidade de espaço: O(n) (linear)
+//complexidade de espaÃ§o: O(n) (linear)
 //complexidade de tempo: O(n log n)
 void mergeSort(int v[], int ini, int fim) {
     if (ini < fim) {
