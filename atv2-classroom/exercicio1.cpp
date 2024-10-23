@@ -1,32 +1,71 @@
 #include<iostream>
 #include<bits/stdc++.h>
-#include<stack>
-#include<ctype.h>
+#include<string.h>
+#include<fstream>
+
+#define LIMITE 1000
 
 using namespace std;
 
-void geraVetor(int v[], int n){
-    for(int i=0; i<n; i++){
-        v[i] = rand() % n;
-    }
-}
+struct No {
+    char nome[100];
+    No* prox;
 
-void troca(int v[], int a, int b){
-    int aux = v[a];
+    No() {
+        prox = NULL;
+    }
+
+};
+
+struct Lista {
+    No* inicio;
+    No* fim;
+    int n;
+
+    Lista() {
+        inicio = NULL;
+        fim = NULL;
+        n = 0;
+    }
+
+    void inserirFinal(char nome[]) {
+    	
+        No* novo = new No();
+        strcpy(novo->nome, nome);
+		if (inicio == NULL) {
+            inicio = novo;
+            fim = novo;
+        } else {
+            fim->prox = novo;
+            fim = novo;
+        }
+        n++;
+        
+		//cout<<n<<": "<<novo->nome<<endl;
+    }
+	
+	void imprimir() {
+        No* aux = inicio;
+        
+        //printf("%d %d\n", aux, aux->valor);
+        while (aux != NULL) {
+            cout<<aux->nome<<endl;
+            //printf("%d %d\n", aux->prox, aux->nome);
+            aux = aux->prox;
+        }
+    }
+};
+
+
+void troca(Lista nomes, int a, int b){
+    Lista aux = v[a];
     v[a] = v[b];
     v[b] = aux;
 }
 
-void imprimirVetor(int v[], int n){
-    for(int i=0; i<n; i++){
-        cout<<v[i]<<" ";
-    }
-    cout<<endl;
-}
-
 //complexidade de espaço: O(1) (constante)
 //complexidade de tempo: O(n²) (exponencial)
-void bubbleSortOtimizado(int v[], int n){
+void bubbleSortOtimizado(Lista nomes, int n){
     for(int i=0; i < n-1; i++){
     	bool houveTroca = false;
         for(int j=0; j < (n-1) - i; j++){
@@ -41,7 +80,7 @@ void bubbleSortOtimizado(int v[], int n){
 
 //complexidade de espaço: O(1) (constante)
 //complexidade de tempo: O(n²) (exponencial)
-void selectionSort(int v[], int n){
+void selectionSort(Lista nomes, int n){
 	for(int i=0; i < n-1; i++){
 		for(int j=i+1; j < n; j++){
 			if(v[i] > v[j]){
@@ -53,9 +92,9 @@ void selectionSort(int v[], int n){
 
 //complexidade de espaço: O(1) (constante)
 //complexidade de tempo: O(n²) (exponencial)
-void insertionSort(int v[], int n){
+void insertionSort(Lista nomes, int n){
 	for(int i=1; i < n; i++){
-		int aux = v[i];
+		vector<string> aux = v[i];
 		int j = i-1;
 		
 		while(j>=0 && aux<v[j]){
@@ -68,8 +107,8 @@ void insertionSort(int v[], int n){
 }
 
 // Complexidade de tempo e espaço = O(n)
-void merge(int v[], int ini, int meio, int fim) {
-    int tmp[(fim-ini) + 1];
+void merge(Lista nomes, int ini, int meio, int fim) {
+    vector<string> tmp[(fim-ini) + 1];
     int i=ini;
 	int j=meio + 1;
 	int k=0;
@@ -77,17 +116,6 @@ void merge(int v[], int ini, int meio, int fim) {
     //meio e fim são os limites dos vetores divididos
     while (i<=meio && j<=fim) {
         tmp[k++] = (v[i] < v[j]) ? v[i++] : v[j++];
-        
-        //OU
-		/*
-        if(v[i] < v[j]){
-        	temp[k] = v[i];
-        	i++;
-		}else{
-			tmp[k] = v[j];
-			j++;
-		}
-		k++;*/
     }
     
     //restos
@@ -106,7 +134,7 @@ void merge(int v[], int ini, int meio, int fim) {
 
 //complexidade de espaço: O(n) (linear)
 //complexidade de tempo: O(n log n)
-void mergeSort(int v[], int ini, int fim) {
+void mergeSort(Lista nomes, int ini, int fim) {
     if (ini < fim) {
         int meio = (ini + fim) / 2;
         //printf("%d %d %d\n", ini, meio, fim);
@@ -117,40 +145,64 @@ void mergeSort(int v[], int ini, int fim) {
 }
 
 int main(){
-    int n;
-	cout<<"Digite o tamanho do vetor"<<endl;
-	cin>>n;
-	cout<<endl;
-    int v[n];
-	
-	srand(time(NULL));
-    geraVetor(v, n);
-	
 	int escolha=0;
-	while(escolha<1 || escolha>4){
+	
+	while(escolha!=5){
+	    Lista nomes;
+	    string linha;
+	
+		//ifstream – abre o arquivo apenas para leitura
+		ifstream arq ("nomes2.txt");
+		
+		if (arq.is_open()) {
+			//eof() - retorna true ao atingir o fim do arquivo
+			int i=1;
+			while( !arq.eof() ){
+				if(i>LIMITE) break;
+				
+				getline(arq, linha);
+			    char nome[100]; 
+			    strcpy(nome, linha.c_str());
+				nomes.inserirFinal(nome);
+				i++;
+			}
+			
+			arq.close();
+		}else{
+			cout<<"ERRO: arquivo nao foi aberto ou nao existe"<<endl;
+		}
+	    
+		nomes.imprimir();
+		cout<<nomes.n<<endl;
+		
 		cout<<"Escolha um dos algoritmos de ordenacao abaixo:"<<endl;
 		cout<<"1 - BubbleSort"<<endl;
 		cout<<"2 - SelectionSort"<<endl;
 		cout<<"3 - InsertionSort"<<endl;
 		cout<<"4 - MergeSort"<<endl;
+		cout<<"5 - Sair"<<endl;
 		cin>>escolha;
+		cout<<endl;
 		
 		if(escolha==1){
-			bubbleSortOtimizado(v, n);
+			bubbleSortOtimizado(nomes, n);
 		}else if(escolha==2){
-			selectionSort(v, n);
+			selectionSort(nomes, n);
 		}else if(escolha==3){
-			insertionSort(v , n);
+			insertionSort(nomes, n);
 		}else if(escolha==4){
-			mergeSort(v, 0, n-1);
+			mergeSort(nomes, 0, n-1);
+		}else if(escolha==5){
+			return 0;
 		}else{
 			cout<<"Opcao invalida! Escolha novamente!"<<endl;
 			cout<<endl;
+			
+			system("pause");
 			continue;
 		}
-		cout<<endl;
 		
-	    imprimirVetor(v, n);
+		system("pause");
 	}
     
 	return 0;
