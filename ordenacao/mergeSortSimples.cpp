@@ -1,14 +1,14 @@
 #include<iostream>
 #include<stdio.h>
 
-// Complexidade de tempo e espaço = O(n)
+// Complexidade de tempo e espa?o = O(n)
 void merge(int v[], int ini, int meio, int fim) {
     int tmp[(fim-ini) + 1];
     int i=ini;
-	int j=meio + 1
+	int j=meio + 1;
 	int k=0;
     
-    //meio e fim são os limites dos vetores divididos
+    //meio e fim s?o os limites dos vetores divididos
     while (i<=meio && j<=fim) {
         tmp[k++] = (v[i] < v[j]) ? v[i++] : v[j++];
         
@@ -38,14 +38,14 @@ void merge(int v[], int ini, int meio, int fim) {
     }
 }
 
-// Complexidade de tempo O(n log n) e espaço O(n)
-void mergeSort(int v[], int ini, int fim) {
+// Complexidade de tempo O(n log n) e espa?o O(n)
+void mergeSortSimples(int v[], int ini, int fim) {
     if (ini < fim) {
         int meio = (ini+fim) / 2;
         
         //printf("%d %d %d\n", s, m, e);
-        mergeSort(v, ini, meio);
-        mergeSort(v, ini+1, fim);
+        mergeSortSimples(v, ini, meio);
+        mergeSortSimples(v, meio+1, fim);
         
         merge(v, ini, meio, fim);
     }
@@ -65,6 +65,6 @@ void imprimirVetorC(int v[], int n) {
 
 int main(){
 	int v[] = {10, 1, 5, 2, 4, 7, 5, 8, 3, 9};
-	mergeSort(v, 0, 9);
+	mergeSortSimples(v, 0, 9);
 	imprimirVetor(v, 10);
 }
