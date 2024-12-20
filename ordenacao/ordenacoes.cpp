@@ -30,8 +30,8 @@ void imprimirVetorC(int v[], int n) {
     }
 }
 
-//complexidade de espaÃ§o: O(1) (constante)
-//complexidade de tempo: O(nÂ²) (exponencial)
+//complexidade de tempo: O(n²) (exponencial)
+//complexidade de espaço: O(1) (constante)
 void bubbleSortOtimizado(int v[], int n){
     for(int i=0; i < n-1; i++){
     	bool houveTroca = false;
@@ -45,8 +45,8 @@ void bubbleSortOtimizado(int v[], int n){
     }
 }
 
-//complexidade de espaÃ§o: O(1) (constante)
-//complexidade de tempo: O(nÂ²) (exponencial)
+//complexidade de tempo: O(n²) (exponencial)
+//complexidade de espaço: O(1) (constante)
 void selectionSort(int v[], int n){
 	for(int i=0; i < n-1; i++){
 		for(int j=i+1; j < n; j++){
@@ -57,8 +57,8 @@ void selectionSort(int v[], int n){
 	}
 }
 
-//complexidade de espaÃ§o: O(1) (constante)
-//complexidade de tempo: O(nÂ²) (exponencial)
+//complexidade de tempo: O(n²) (exponencial)
+//complexidade de espaço: O(1) (constante)
 void insertionSort(int v[], int n){
 	for(int i=1; i < n; i++){
 		int aux = v[i];
@@ -73,14 +73,15 @@ void insertionSort(int v[], int n){
 	}
 }
 
-// Complexidade de tempo e espaÃ§o = O(n)
+//complexidade de tempo: O(n) (linear)
+//complexidade de espaço: O(n) (linear)
 void merge(int v[], int ini, int meio, int fim) {
     int tmp[(fim-ini) + 1];
     int i=ini;
 	int j=meio + 1;
 	int k=0;
     
-    //meio e fim sÃ£o os limites dos vetores divididos
+    //meio e fim são os limites dos vetores divididos
     while (i<=meio && j<=fim) {
         tmp[k++] = (v[i] < v[j]) ? v[i++] : v[j++];
         
@@ -110,15 +111,43 @@ void merge(int v[], int ini, int meio, int fim) {
     }
 }
 
-//complexidade de espaÃ§o: O(n) (linear)
 //complexidade de tempo: O(n log n)
-void mergeSort(int v[], int ini, int fim) {
+//complexidade de espaço: O(n) (linear)
+void mergeSortSimples(int v[], int ini, int fim) {
     if (ini < fim) {
         int meio = (ini + fim) / 2;
         //printf("%d %d %d\n", ini, meio, fim);
-        mergeSort(v, ini, meio);
-        mergeSort(v, meio + 1, fim);
+        mergeSortSimples(v, ini, meio);
+        mergeSortSimples(v, meio + 1, fim);
+        
         merge(v, ini, meio, fim);
+    }
+}
+
+//complexidade de tempo: O(max(n, m)) onde m é o maior elemento do vetor
+//complexidade de espaço: O(m)
+void countingSort(int v[], int n, int m) {
+	//m = maior elemento do vetor
+	
+	//vetor temporario = 0
+    int tmp[m + 1];
+    for (int i=0; i<m+1; i++) tmp[i] = 0;
+    
+    //percorrendo o vetor normal
+    for (int i=0; i<n; i++) {
+    	//no vetor contador, some 1 onde a posicao eh = o valor do vetor
+        tmp[ v[i] ]++;
+    }
+    
+    //percorrendo vetor temporário e "esvaziando" ele
+    for (int i=0,j=0; i<m+1; i++) {
+    	//enquanto houver elementos a serem contados
+        while(tmp[i] > 0) {
+        	//ordenando vetor normal
+            v[j++] = i;
+            //quantas vezes cada número tiver no tmp
+            tmp[i]--;
+        }
     }
 }
 
@@ -127,18 +156,20 @@ int main(){
 	cout<<"Digite o tamanho do vetor"<<endl;
 	cin>>n;
 	cout<<endl;
+	
     int v[n];
 	
 	srand(time(NULL));
     geraVetor(v, n);
 	
 	int escolha=0;
-	while(escolha<1 || escolha>4){
+	while(escolha<1 || escolha>5){
 		cout<<"Escolha um dos algoritmos de ordenacao abaixo:"<<endl;
 		cout<<"1 - BubbleSort"<<endl;
 		cout<<"2 - SelectionSort"<<endl;
 		cout<<"3 - InsertionSort"<<endl;
 		cout<<"4 - MergeSort"<<endl;
+		cout<<"5 - CountingSort"<<endl;
 		cin>>escolha;
 		
 		if(escolha==1){
@@ -148,7 +179,9 @@ int main(){
 		}else if(escolha==3){
 			insertionSort(v , n);
 		}else if(escolha==4){
-			mergeSort(v, 0, n-1);
+			mergeSortSimples(v, 0, n-1);
+		}else if(escolha==5){
+			countingSort(v, n, n);
 		}else{
 			cout<<"Opcao invalida! Escolha novamente!"<<endl;
 			cout<<endl;
