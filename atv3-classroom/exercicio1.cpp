@@ -1,7 +1,5 @@
 #include<iostream>
 #include<bits/stdc++.h>
-#include<stack>
-#include<ctype.h>
 
 using namespace std;
 
@@ -12,10 +10,9 @@ struct No {
     No() {
         prox = NULL;
     }
-
 };
 
-struct Lista {
+struct ListaChar {
     No* inicio;
     No* fim;
     int n;
@@ -81,26 +78,15 @@ bool buscaSequencial(int v[], int n, int x) {
     return false;
 }
 
-// comp. tempo O(n)
-bool buscarSubstring(char nome[], char busca[]) {
-	if (strstr(nome,busca)!=NULL){
-		//cout<<"encontrado!"<<endl;
-		return true;
-	}else{
-		//cout<<"nao encontrado!"<<endl;
-		return false;
-	}
-}
-
 // comp. tempo O(log n)
 // comp. espaco O(1)
 bool buscaBinaria(int v[], int n, int x) {
     int ini=0, fim=n-1;
     while (ini <= fim) {
         int meio = (ini + fim) / 2;
-        if (v[m] == x) {
+        if (v[meio] == x) {
             return true;
-        } else if (v[m] > x) {
+        } else if (v[meio] > x) {
             fim = meio - 1;
         } else {
             ini = meio + 1;
@@ -117,41 +103,60 @@ void converterMaiusculo(char str[]){
 	}
 }
 
-int main(){
-	Lista arqnomes;
-    string linha;
-    char busca[100];
+int confirmaIniciais(char nome[], char busca[]){
+	//máximo = tamanho da busca
+	int n = strlen(busca);
+	
+	//enquanto houver letras da busca
+	for(int i=0; i<n; i++){
+		
+		//conferir letra por letra do inicio do nome
+		if(nome[i] != busca[i]) return 1;
+	}
+	
+	return 0;
+}
 
+int main(){
 	//ifstream – abre o arquivo apenas para leitura
 	ifstream arq ("nomes.txt");
+	string linha;
+    char busca[100];
+    int contador=0;
+    
+    cout<<"Digite a sua substring (Busca): ";
+	cin>>busca;
+	cout<<endl;
+	converterMaiusculo(busca);
 	
 	//eof() - retorna true ao atingir o fim do arquivo
 	if( arq.is_open() ){
 		while( !arq.eof() ){
 			char nome[100];
 			
+			//pega a linha e guarda em nome;
 			getline(arq, linha);
 		    strcpy(nome, linha.c_str());
-		    
 		    converterMaiusculo(nome);
-			arqnomes.inserirFinal(nome);
+		    
+		    //char *point = strstr(nome, busca);
+			if (confirmaIniciais(nome, busca)==0){
+				//cout<<"encontrado!"<<endl;
+				//cout<<strstr(nome,busca)<<endl;
+				cout<<nome<<endl;
+				contador++;
+			}else{
+				//cout<<"nao encontrado!"<<endl;
+			}
 		}
-		arqnomes.removerFinal();
-		
 		arq.close();
 	}else{
 		cout<<"ERRO: arquivo nao foi aberto ou nao existe"<<endl;
+		return 0;
 	}
-    
-    //PARA TESTES
-	//arqnomes.imprimir();
-	//cout<<"qtd: "<<arqnomes.n<<endl;
 	
-	cout<<"Digite a sua substring (Busca): ";
-	cin>>busca;
-	converterMaiusculo(busca);
-	
-	buscaSequencialChar("ADELIA ROSMANINHO",busca);
+	if(contador!=0) cout<<endl;
+	cout<<contador<<" resultado(s)!"<<endl;
 	
 	return 0;
 }
