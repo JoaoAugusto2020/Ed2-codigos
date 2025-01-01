@@ -61,12 +61,12 @@ void insertionSort(int v[], int n){
 	for(int i=1; i < n; i++){
 		int aux = v[i];
 		int j = i-1;
-		
+
 		while(j>=0 && aux<v[j]){
 			v[j + 1] = v[j];
 			j--;
 		}
-		
+
 		v[j+1] = aux;
 	}
 }
@@ -78,7 +78,7 @@ int main(){
     	cin>>v[i];
     	o[i] = v[i];
 	}
-	
+
     bubbleSortOtimizado(v, 3);
     imprimirVetor(v, 3);
     cout<<endl;
